@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polimorfismo - Procesador de Pagos</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <h1>Pago en línea</h1>
+  <form id="paymentForm">
+    <label for="paymentType">Seleccione el tipo de pago:</label>
+    <select id="paymentType">
+      <option value="credit">Tarjeta de Crédito</option>
+      <option value="paypal">PayPal</option>
+      <option value="bank">Transferencia Bancaria</option>
+    </select>
+
+    <label for="amount">Monto:</label>
+    <input type="number" id="amount" placeholder="Ingrese el monto" required>
+
+    <button type="submit">Procesar Pago</button>
+  </form>
+  <p id="result"></p>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
