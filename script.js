@@ -1,3 +1,12 @@
+// Clase intermediaria: GestorDePagos
+class GestorDePagos {
+  static procesar(tipoPago, monto) {
+    const procesador = ProcesadorDePagoFactory.obtenerProcesador(tipoPago);
+    Logger.logTransaction(tipoPago, monto);
+    return procesador.procesarPago(monto);
+  }
+}
+
 // Clase de Fabricación Pura: Logger
 class Logger {
   static logTransaction(paymentType, amount) {
@@ -8,7 +17,7 @@ class Logger {
 // Interface común para los procesadores de pago
 class ProcesadorDePago {
   procesarPago(monto) {
-    throw new Error("Este método debe ser implementado por una subclase.");
+    throw new Error('Este método debe ser implementado por una subclase.');
   }
 }
 
@@ -43,28 +52,32 @@ class ProcesadorDePagoFactory {
 
     const procesador = procesadores[tipoPago];
     if (!procesador) {
-      throw new Error("Tipo de pago no soportado.");
+      throw new Error('Tipo de pago no soportado.');
     }
     return procesador;
   }
 }
 
 // Manejador del evento de envío del formulario
-document.getElementById('paymentForm').addEventListener('submit', function (event) {
-  event.preventDefault();
+document
+  .getElementById('paymentForm')
+  .addEventListener('submit', function (event) {
+    event.preventDefault();
 
-  const tipoPago = document.getElementById('paymentType').value;
-  const monto = document.getElementById('amount').value;
+    const tipoPago = document.getElementById('paymentType').value;
+    const monto = document.getElementById('amount').value;
 
-  // Validar si el monto es un número positivo
-  if (monto <= 0 || isNaN(monto)) {
-    document.getElementById('result').textContent = "Por favor, ingrese un monto válido.";
-    return;
-  }
+    // Validar si el monto es un número positivo
+    if (monto <= 0 || isNaN(monto)) {
+      document.getElementById('result').textContent =
+        'Por favor, ingrese un monto válido.';
+      return;
+    }
 
-  const procesador = ProcesadorDePagoFactory.obtenerProcesador(tipoPago); // Obtener el procesador de pago
-  Logger.logTransaction(tipoPago, monto); // Registrar la transacción
-  const resultado = procesador.procesarPago(monto); // Procesar el pago
+    // Usar el GestorDePagos como intermediario
+    const resultado = GestorDePagos.procesar(tipoPago, monto);
 
-  document.getElementById('result').textContent = resultado;
-});
+    document.getElementById('result').textContent = resultado;
+  });
+
+
